@@ -1,6 +1,5 @@
 import User from "../models/UserModel.js";
-// import argon2 from "argon2";
-import bcrypt from "bcrypt";
+import argon2 from "argon2";
 
 export const getUsers = async (req, res) => {
   try {
@@ -33,8 +32,8 @@ export const createUser = async (req, res) => {
     return res
       .status(400)
       .json({ msg: "Password dan Confirm Password tidak cocok" });
+  const hashPassword = await argon2.hash(password);
   try {
-    const hashPassword = await bcrypt.hash(password, 10); // Use 10 salt rounds
     await User.create({
       name: name,
       email: email,
