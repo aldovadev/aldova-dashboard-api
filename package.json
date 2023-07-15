@@ -5,7 +5,7 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "start": "APP_PORT = '5000' SESS_SECRET = '2jkhvfajshgftdfagdaje6rj3te2te2ut3rhgf2jr2yrghbsjdhghsgdGHGHJG' nodemon main"
+    "start": "APP_PORT = '5000' SESS_SECRET = '2jkhvfajshgftdfagdaje6rj3te2te2ut3rhgf2jr2yrghbsjdhghsgdGHGHJG' node main"
   },
   "keywords": [],
   "author": "",
