@@ -1,1 +1,1 @@
-SIMPLE DASBOARD API (User login, User role, Graphics, Report)
+SIMPLE DASBOARD API (Nodejs, Express.js, Sequalize, MySQL)
