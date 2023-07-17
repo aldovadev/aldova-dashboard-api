@@ -15,12 +15,11 @@ export const Login = async (req, res) => {
   const name = user.name;
   const email = user.email;
   const role = user.role;
-  const data = json({ uuid, name, email, role });
   res.status(200).json({ uuid, name, email, role });
-  console.log(data);
 };
 
 export const Me = async (req, res) => {
+  console.log(req.session.userId);
   if (!req.session.userId) {
     return res.status(401).json({ msg: "Mohon login ke akun Anda!" });
   }
