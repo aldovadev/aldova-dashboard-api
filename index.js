@@ -35,9 +35,16 @@ app.use(
 );
 
 app.use(
-  cors({
-    credentials: true,
-    origin: "http://localhost:3000",
+  session({
+    secret: process.env.SESS_SECRET,
+    resave: false,
+    saveUninitialized: true,
+    store: store,
+    sameSite: "None", // Set SameSite attribute to None
+    secure: false, // Set secure attribute to false
+    cookie: {
+      httpOnly: true, // Recommended to set httpOnly to true for security
+    },
   })
 );
 
