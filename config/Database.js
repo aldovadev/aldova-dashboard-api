@@ -1,6 +1,6 @@
 import { Sequelize } from "sequelize";
 
-const db = new Sequelize("aldovadb", "root", process.env.PASSWORD, {
+const db = new Sequelize("aldovadb", process.env.USER, process.env.PASSWORD, {
   host: "localhost",
   dialect: "mysql",
 });
