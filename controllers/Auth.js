@@ -29,9 +29,6 @@ export const Me = async (req, res) => {
       uuid: req.session.userId,
     },
   });
-  console.log("===========================");
-  console.log(user);
-  console.log("===========================");
   if (!user) return res.status(404).json({ msg: "User tidak ditemukan" });
   res.status(200).json(user);
 };
