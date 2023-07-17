@@ -27,9 +27,9 @@ app.use(
     resave: false,
     saveUninitialized: true,
     store: store,
-    sameSite: "None",
     cookie: {
       secure: "auto",
+      sameSite: "None",
     },
   })
 );
