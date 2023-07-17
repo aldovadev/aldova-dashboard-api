@@ -1,6 +1,5 @@
-import fs from "fs";
-import https from "https";
 import express from "express";
+import cors from "cors";
 import session from "express-session";
 import dotenv from "dotenv";
 import db from "./config/Database.js";
@@ -12,7 +11,11 @@ dotenv.config();
 
 const app = express();
 
-const sessionStore = new SequelizeStore({ db });
+const sessionStore = SequelizeStore(session.Store);
+
+const store = new sessionStore({
+  db: db,
+});
 
 (async () => {
   await db.sync();
@@ -23,25 +26,27 @@ app.use(
     secret: process.env.SESS_SECRET,
     resave: false,
     saveUninitialized: true,
-    store: sessionStore,
+    store: store,
     cookie: {
-      secure: true, // Set secure attribute to true for HTTPS
-      sameSite: "none", // Set SameSite attribute to "none" for cross-site requests
+      secure: "auto",
     },
   })
 );
 
-app.use(express.json(), UserRoute, ProductRoute, AuthRoute);
+app.use(
+  cors({
+    credentials: true,
+    origin: ["http://localhost:3000", "https://aldova-dev.site"],
+  })
+);
 
-// Read the SSL certificate and private key files
-const privateKey = fs.readFileSync("path/to/private-key.pem", "utf8");
-const certificate = fs.readFileSync("path/to/certificate.pem", "utf8");
-const credentials = { key: privateKey, cert: certificate };
+app.use(express.json());
+app.use(UserRoute);
+app.use(ProductRoute);
+app.use(AuthRoute);
 
-// Create an HTTPS server with the credentials
-const httpsServer = https.createServer(credentials, app);
+// store.sync();
 
-// Start the server on the desired port (e.g., 443 for HTTPS)
-httpsServer.listen(process.env.APP_PORT, () => {
-  console.log("HTTPS server running on port 443");
+app.listen(process.env.APP_PORT, () => {
+  console.log("Server is running ");
 });
