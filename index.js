@@ -22,23 +22,21 @@ const store = new sessionStore({
 })();
 
 app.use(
-  cors({
-    origin: "http://localhost:3000", // Replace with your frontend URL
-    credentials: true,
-  })
-);
-
-app.use(
   session({
     secret: process.env.SESS_SECRET,
     resave: false,
     saveUninitialized: true,
     store: store,
     cookie: {
-      httpOnly: true,
-      secure: false, // Set secure attribute to false for development on HTTP
-      sameSite: "none", // Set SameSite attribute to none
+      secure: "auto",
     },
+  })
+);
+
+app.use(
+  cors({
+    credentials: true,
+    origin: ["http://localhost:3000", "https://aldova-dev.site"],
   })
 );
 
