@@ -15,6 +15,7 @@ export const Login = async (req, res) => {
   const name = user.name;
   const email = user.email;
   const role = user.role;
+  res.header("Access-Control-Allow-Origin", "http://localhost:3000");
   res.status(200).json({ uuid, name, email, role });
 };
 
