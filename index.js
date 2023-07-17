@@ -22,15 +22,9 @@ const store = new sessionStore({
 })();
 
 app.use(
-  session({
-    secret: process.env.SESS_SECRET,
-    resave: false,
-    saveUninitialized: true,
-    store: store,
-    cookie: {
-      secure: false,
-      sameSite: "None",
-    },
+  cors({
+    origin: "http://localhost:3000", // Replace with your frontend URL
+    credentials: true,
   })
 );
 
@@ -40,10 +34,10 @@ app.use(
     resave: false,
     saveUninitialized: true,
     store: store,
-    sameSite: "None", // Set SameSite attribute to None
-    secure: false, // Set secure attribute to false
     cookie: {
-      httpOnly: true, // Recommended to set httpOnly to true for security
+      httpOnly: true,
+      secure: false, // Set secure attribute to false for development on HTTP
+      sameSite: "none", // Set SameSite attribute to none
     },
   })
 );
