@@ -1,21 +1,18 @@
-import express from "express";
-import cors from "cors";
-import session from "express-session";
-import dotenv from "dotenv";
-import db from "./config/Database.js";
-import SequelizeStore from "connect-session-sequelize";
-import UserRoute from "./routes/UserRoute.js";
-import ProductRoute from "./routes/ProductRoute.js";
-import AuthRoute from "./routes/AuthRoute.js";
+const fs = require("fs");
+const https = require("https");
+const express = require("express");
+const session = require("express-session");
+const dotenv = require("dotenv");
+const db = require("./config/Database.js");
+const SequelizeStore = require("connect-session-sequelize")(session.Store);
+const UserRoute = require("./routes/UserRoute.js");
+const ProductRoute = require("./routes/ProductRoute.js");
+const AuthRoute = require("./routes/AuthRoute.js");
 dotenv.config();
 
 const app = express();
 
-const sessionStore = SequelizeStore(session.Store);
-
-const store = new sessionStore({
-  db: db,
-});
+const sessionStore = new SequelizeStore({ db });
 
 (async () => {
   await db.sync();
@@ -26,27 +23,25 @@ app.use(
     secret: process.env.SESS_SECRET,
     resave: false,
     saveUninitialized: true,
-    store: store,
+    store: sessionStore,
     cookie: {
-      secure: "auto",
+      secure: true, // Set secure attribute to true for HTTPS
+      sameSite: "none", // Set SameSite attribute to "none" for cross-site requests
     },
   })
 );
 
-app.use(
-  cors({
-    credentials: true,
-    origin: ["http://localhost:3000", "https://aldova-dev.site"],
-  })
-);
+app.use(express.json(), UserRoute, ProductRoute, AuthRoute);
 
-app.use(express.json());
-app.use(UserRoute);
-app.use(ProductRoute);
-app.use(AuthRoute);
+// Read the SSL certificate and private key files
+const privateKey = fs.readFileSync("path/to/private-key.pem", "utf8");
+const certificate = fs.readFileSync("path/to/certificate.pem", "utf8");
+const credentials = { key: privateKey, cert: certificate };
 
-// store.sync();
+// Create an HTTPS server with the credentials
+const httpsServer = https.createServer(credentials, app);
 
-app.listen(process.env.APP_PORT, () => {
-  console.log("Server is running ");
+// Start the server on the desired port (e.g., 443 for HTTPS)
+httpsServer.listen(process.env.APP_PORT, () => {
+  console.log("HTTPS server running on port 443");
 });
