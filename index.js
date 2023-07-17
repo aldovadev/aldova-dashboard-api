@@ -1,13 +1,13 @@
-const fs = require("fs");
-const https = require("https");
-const express = require("express");
-const session = require("express-session");
-const dotenv = require("dotenv");
-const db = require("./config/Database.js");
-const SequelizeStore = require("connect-session-sequelize")(session.Store);
-const UserRoute = require("./routes/UserRoute.js");
-const ProductRoute = require("./routes/ProductRoute.js");
-const AuthRoute = require("./routes/AuthRoute.js");
+import fs from "fs";
+import https from "https";
+import express from "express";
+import session from "express-session";
+import dotenv from "dotenv";
+import db from "./config/Database.js";
+import SequelizeStore from "connect-session-sequelize";
+import UserRoute from "./routes/UserRoute.js";
+import ProductRoute from "./routes/ProductRoute.js";
+import AuthRoute from "./routes/AuthRoute.js";
 dotenv.config();
 
 const app = express();
