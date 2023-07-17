@@ -16,6 +16,7 @@ export const Login = async (req, res) => {
   const email = user.email;
   const role = user.role;
   res.status(200).json({ uuid, name, email, role });
+  console.log(json({ uuid, name, email, role }));
 };
 
 export const Me = async (req, res) => {
